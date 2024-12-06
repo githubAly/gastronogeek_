@@ -5,7 +5,9 @@ import Link from 'next/link';
 import React from 'react';
 import { FaEye, FaUser } from 'react-icons/fa';
 
-
+interface RecipeCardProps {
+  recipe: Recipe;
+}
 interface Recipe {
   slug: string;
   title: string;
@@ -17,7 +19,7 @@ interface Recipe {
 }
 
 
-const RecipeCard: React.FC<{ recipe: Recipe }> = ({ recipe }) => {
+const RecipeCard: React.FC< RecipeCardProps > = ({ recipe }) => {
   const firstImage = recipe.images?.[0] || 'https://via.placeholder.com/150'; 
   
   return (
