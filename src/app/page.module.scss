@@ -1,0 +1,90 @@
+.carousel {
+    padding: 40px 20px;
+    text-align: center;
+    position: relative;
+    
+    .carouselTitle {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    
+    .carouselWrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      position: relative;
+      margin-top: 20px;
+    }
+    
+    .carouselButton {
+      background-color: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      padding: 15px;
+      border-radius: 50%;
+      z-index: 10;
+      font-size: 1.5rem;
+      transition: transform 0.2s ease-in-out;
+    
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+        transform: scale(1.1);
+      }
+    }
+    
+    .carouselContainer {
+      display: flex;
+      overflow: hidden;
+      width: 100%;
+      justify-content: center;
+      position: relative;
+      gap: 7px;
+      transition: transform 0.8s ease-in-out;
+    
+      & > div {
+        flex: 0 0 25%;
+        transition: transform 0.4s ease-in-out;
+      }
+    }
+  }
+  
+  .description {
+    text-align: center;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 30px 20px;
+    
+    .title {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #2d2d2d;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .subtitle {
+      font-size: 1.1rem;
+      color: #666;
+      margin-bottom: 20px;
+      line-height: 1.6;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    
+    .fullDescription {
+      font-size: 1.2rem;
+      color: #444;
+      line-height: 1.8;
+      text-align: justify;
+      margin-top: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+      font-style: italic;
+    }
+  }
+  

@@ -1,0 +1,44 @@
+.hero {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  
+    .backgroundImage {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+  
+    .content {
+      text-align: center;
+  
+      .title {
+        font-size: 3rem;
+        font-weight: bold;
+      }
+  
+      .subtitle {
+        margin-top: 10px;
+        font-size: 1.5rem;
+      }
+  
+      .cta {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #ff6600;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        font-size: 1rem;
+      }
+    }
+  }
+  

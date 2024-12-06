@@ -1,0 +1,19 @@
+/* Navigation.module.scss */
+.searchWrapper {
+    position: relative;
+  }
+  
+  .searchInput {
+    padding: 8px 12px;
+    width: 250px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    outline: none;
+    transition: border 0.3s ease;
+  }
+  
+  .searchInput:focus {
+    border-color: #3b82f6; /* Couleur de focus */
+  }
+  
