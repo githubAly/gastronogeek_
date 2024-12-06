@@ -1,16 +1,20 @@
 "use client";
 
-import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
+import React, { useState, useEffect } from "react";
 import Filter from "../components/Filter/page";
 import RecipeCard from "../components/Card/page";
 
 interface Recipe {
   id: string;
+  slug: string;
   title: string;
-  desc: string;
+  type: string;
+  images?: string[];
+  defaultPersons: number;
+  difficulty: 1 | 2 | 3;
+  commonTitle: string;
   category: string;
   license: string;
-  images: string[];
 }
 
 async function getRecipes(): Promise<Recipe[]> {
@@ -47,7 +51,7 @@ const RecipeList = () => {
   return (
     <div className="bg-white">
       <Filter
-        setFilteredRecipes={setFilteredRecipes as Dispatch<SetStateAction<Recipe[]>>}
+        setFilteredRecipes={() => setFilteredRecipes}
         recipes={recipes}
       />
       <div className="grid grid-cols-1 gap-6 bg-white sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-6">

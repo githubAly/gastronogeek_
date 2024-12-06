@@ -5,9 +5,11 @@ import { animatePageOut } from "@/utils/animations"
 interface Props {
   href: string
   label: string
+  className?: string
+
 }
 
-const TransitionLink = ({ href, label }: Props) => {
+const TransitionLink = ({ href, label, className }: Props) => {
   const router = useRouter()
   const pathname = usePathname()
 
@@ -19,7 +21,7 @@ const TransitionLink = ({ href, label }: Props) => {
 
   return (
     <button
-      className="text-xl text-neutral-900 hover:text-neutral-700"
+      className={`text-xl text-neutral-900 hover:text-neutral-700 ${className}`}
       onClick={handleClick}
     >
       {label}

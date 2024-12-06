@@ -7,9 +7,13 @@ import { useEffect, useState } from "react";
 
 interface Recipe {
   id: string;
+  slug: string;
   title: string;
-  description: string;
-  // Ajoutez d'autres propriétés pertinentes ici si nécessaire
+  type: string;
+  images?: string[];
+  defaultPersons: number;
+  difficulty: 1 | 2 | 3;
+  commonTitle: string;
 }
 
 export default function Home() {

@@ -1,10 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import React, { useState, useEffect } from 'react';
-import { FaUser } from 'react-icons/fa'; // Import de l'icône utilisateur
-import Link from 'next/link'; // Import du composant Link
+import { FaUser } from 'react-icons/fa';
+import Link from 'next/link';
 
-// Types pour les données des recettes
 interface Ingredient {
   name: string;
   quantity?: number;
@@ -26,7 +25,7 @@ interface Recipe {
   dressing: string;
 }
 
-interface SuggestedRecipe extends Recipe {}
+type SuggestedRecipe = Recipe
 
 async function getRecipes(): Promise<Recipe[]> {
   const res = await fetch('https://api-gastronogeek.vercel.app/api/recipes/');
@@ -39,7 +38,6 @@ async function getRecipeBySlug(slug: string): Promise<Recipe | undefined> {
   return recipes.find((recipe) => recipe.slug === slug);
 }
 
-// Fonction pour afficher le système de points en fonction de la difficulté
 const renderDifficultyPoints = (difficulty: number) => {
   const totalPoints = 3;
   const points: JSX.Element[] = [];
@@ -68,7 +66,6 @@ export default function RecipeDetail({ params }: { params: { slug: string } }) {
         if (!recipeData) throw new Error('Recette non trouvée');
         setRecipe(recipeData);
 
-        // Filtrer les recettes ayant la même licence
         const allRecipes = await getRecipes();
         const relatedRecipes = allRecipes.filter(
           (r) => r.license === recipeData.license && r.slug !== recipeData.slug
@@ -86,7 +83,7 @@ export default function RecipeDetail({ params }: { params: { slug: string } }) {
 
   const adjustIngredients = (ingredient: Ingredient) => {
     if (ingredient.quantity && recipe?.defaultPersons !== numberOfPeople) {
-      const adjustedQuantity = ingredient.quantity * (numberOfPeople / recipe.defaultPersons);
+      const adjustedQuantity = ingredient.quantity * (numberOfPeople / recipe!.defaultPersons);
       return `${adjustedQuantity.toFixed(2)} ${ingredient.unit || ''}`;
     }
     return ingredient.quantity ? `${ingredient.quantity} ${ingredient.unit || ''}` : '';
@@ -122,8 +119,6 @@ export default function RecipeDetail({ params }: { params: { slug: string } }) {
           <p className="text-gray-600 mb-2"><strong>Temps de préparation:</strong> {recipe.prepTime}</p>
           <p className="text-gray-600 mb-4"><strong>Difficulté:</strong> {renderDifficultyPoints(recipe.difficulty)}</p>
           <p className="max-w-screen-sm text-xl text-gray-500 mb-4">{recipe.desc}</p>
-
-          {/* Sélecteur du nombre de personnes */}
           <div className="mt-6">
             <label className="text-lg font-semibold text-gray-700 mb-2">Nombre de personnes :</label>
             <input
@@ -135,8 +130,6 @@ export default function RecipeDetail({ params }: { params: { slug: string } }) {
             />
           </div>
         </div>
-
-        {/* Image Section */}
         <div className="flex-1 mt-6 md:mt-0">
           {recipe.images && recipe.images.length > 0 ? (
             <img
@@ -147,14 +140,12 @@ export default function RecipeDetail({ params }: { params: { slug: string } }) {
           ) : (
             <img
               className="w-full h-auto rounded-lg shadow-lg"
-              src="/default-image.jpg" // Image par défaut si aucune image n'est disponible
+              src="/default-image.jpg" 
               alt="Image par défaut"
             />
           )}
         </div>
       </div>
-
-      {/* Ingredients Section */}
       <h3 className="text-2xl font-semibold text-gray-800 mb-4">Ingrédients</h3>
       {recipe.ingredients?.length ? (
         <ul className="list-disc pl-6 text-gray-700 mb-6">
@@ -167,8 +158,6 @@ export default function RecipeDetail({ params }: { params: { slug: string } }) {
       ) : (
         <p>Aucun ingrédient disponible.</p>
       )}
-
-      {/* Instructions Section */}
       <h3 className="text-2xl font-semibold text-gray-800 mb-4">Instructions</h3>
       {recipe.steps?.length ? (
         <ol className="list-decimal pl-6 text-gray-700 mb-6">
@@ -179,12 +168,8 @@ export default function RecipeDetail({ params }: { params: { slug: string } }) {
       ) : (
         <p>Aucune instruction disponible.</p>
       )}
-
-      {/* Dressing Section */}
       <h3 className="text-2xl font-semibold text-gray-800 mb-4">Dressage</h3>
       <p className="text-gray-700">{recipe.dressing}</p>
-
-      {/* Suggestions Section */}
       {suggestedRecipes.length > 0 && (
         <div className="mt-8">
           <h3 className="text-2xl font-semibold text-gray-800 mb-4">Recettes similaires avec la même licence :</h3>
@@ -192,7 +177,6 @@ export default function RecipeDetail({ params }: { params: { slug: string } }) {
             {suggestedRecipes.map((suggestedRecipe) => (
               <Link key={suggestedRecipe.slug} href={`/recettes/${suggestedRecipe.slug}`}>
                 <div className="bg-white rounded-lg shadow-md overflow-hidden">
-                  {/* Image Section */}
                   <img
                     src={suggestedRecipe.images && suggestedRecipe.images.length > 0 ? suggestedRecipe.images[0] : '/default-image.jpg'} // Image par défaut si aucune image n'est disponible
                     alt={suggestedRecipe.title}

@@ -16,14 +16,6 @@ interface Recipe {
   commonTitle: string;
 }
 
-async function getRecipes() {
-  const res = await fetch('https://api-gastronogeek.vercel.app/api/recipes/', {
-    next: { revalidate: 60 },
-  });
-
-  if (!res.ok) throw new Error('Erreur lors de la récupération des recettes');
-  return res.json();
-}
 
 const RecipeCard: React.FC<{ recipe: Recipe }> = ({ recipe }) => {
   const firstImage = recipe.images?.[0] || 'https://via.placeholder.com/150'; 
