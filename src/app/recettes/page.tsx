@@ -30,6 +30,7 @@ const RecipeList = () => {
   const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>([]);
   const [error, setError] = useState<string | null>(null);
 
+
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
@@ -51,13 +52,16 @@ const RecipeList = () => {
   return (
     <div className="bg-white">
       <Filter
-        setFilteredRecipes={() => setFilteredRecipes}
+        setFilteredRecipes={setFilteredRecipes} 
         recipes={recipes}
       />
       <div className="grid grid-cols-1 gap-6 bg-white sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-6">
         {filteredRecipes.length > 0 ? (
           filteredRecipes.map((recipe) => (
-            <RecipeCard key={recipe.id} recipe={recipe} />
+            <RecipeCard
+              key={recipe.id || recipe.slug}
+              recipe={recipe}
+            />
           ))
         ) : (
           <p>Aucune recette trouvée</p>

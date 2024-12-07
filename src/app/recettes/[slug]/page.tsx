@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
+
 import React, { useState, useEffect } from 'react';
 import { FaUser } from 'react-icons/fa';
 import Link from 'next/link';
@@ -25,7 +26,7 @@ interface Recipe {
   dressing: string;
 }
 
-type SuggestedRecipe = Recipe
+type SuggestedRecipe = Recipe;
 
 async function getRecipes(): Promise<Recipe[]> {
   const res = await fetch('https://api-gastronogeek.vercel.app/api/recipes/');
@@ -44,22 +45,34 @@ const renderDifficultyPoints = (difficulty: number) => {
 
   for (let i = 1; i <= totalPoints; i++) {
     points.push(
-      <span key={i} className={i <= difficulty ? 'text-yellow-500' : 'text-gray-400'}>●</span>
+      <span key={i} className={i <= difficulty ? 'text-yellow-500' : 'text-gray-400'}>
+        ●
+      </span>
     );
   }
 
   return points;
 };
 
-export default function RecipeDetail({ params }: { params: { slug: string } }) {
-  const { slug } = params;
-
+export default function RecipeDetail({ params }: { params: Promise<{ slug: string }> }) {
+  const [slug, setSlug] = useState<string | null>(null);
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [numberOfPeople, setNumberOfPeople] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true);
   const [suggestedRecipes, setSuggestedRecipes] = useState<SuggestedRecipe[]>([]);
 
   useEffect(() => {
+    const fetchParams = async () => {
+      const resolvedParams = await params;
+      setSlug(resolvedParams.slug);
+    };
+
+    fetchParams();
+  }, [params]);
+
+  useEffect(() => {
+    if (!slug) return;
+
     const fetchRecipe = async () => {
       try {
         const recipeData = await getRecipeBySlug(slug);
@@ -118,7 +131,6 @@ export default function RecipeDetail({ params }: { params: { slug: string } }) {
           </p>
           <p className="text-gray-600 mb-2"><strong>Temps de préparation:</strong> {recipe.prepTime}</p>
           <p className="text-gray-600 mb-4"><strong>Difficulté:</strong> {renderDifficultyPoints(recipe.difficulty)}</p>
-          <p className="max-w-screen-sm text-xl text-gray-500 mb-4">{recipe.desc}</p>
           <div className="mt-6">
             <label className="text-lg font-semibold text-gray-700 mb-2">Nombre de personnes :</label>
             <input
@@ -131,23 +143,17 @@ export default function RecipeDetail({ params }: { params: { slug: string } }) {
           </div>
         </div>
         <div className="flex-1 mt-6 md:mt-0">
-          {recipe.images && recipe.images.length > 0 ? (
-            <img
-              className="w-full h-auto rounded-lg shadow-lg"
-              src={recipe.images[0]}
-              alt={`${recipe.title} image`}
-            />
-          ) : (
-            <img
-              className="w-full h-auto rounded-lg shadow-lg"
-              src="/default-image.jpg" 
-              alt="Image par défaut"
-            />
-          )}
+          <img
+            className="w-full h-auto rounded-lg shadow-lg"
+            src={recipe.images?.[0] || "/default-image.jpg"}
+            alt={recipe.title}
+          />
         </div>
       </div>
+
+
       <h3 className="text-2xl font-semibold text-gray-800 mb-4">Ingrédients</h3>
-      {recipe.ingredients?.length ? (
+      {recipe.ingredients?.length > 0 ? (
         <ul className="list-disc pl-6 text-gray-700 mb-6">
           {recipe.ingredients.map((ingredient, index) => (
             <li key={index} className="mb-2">
@@ -158,8 +164,9 @@ export default function RecipeDetail({ params }: { params: { slug: string } }) {
       ) : (
         <p>Aucun ingrédient disponible.</p>
       )}
+
       <h3 className="text-2xl font-semibold text-gray-800 mb-4">Instructions</h3>
-      {recipe.steps?.length ? (
+      {recipe.steps?.length > 0 ? (
         <ol className="list-decimal pl-6 text-gray-700 mb-6">
           {recipe.steps.map((step, index) => (
             <li key={index} className="mb-2">{step}</li>
@@ -169,16 +176,17 @@ export default function RecipeDetail({ params }: { params: { slug: string } }) {
         <p>Aucune instruction disponible.</p>
       )}
       <h3 className="text-2xl font-semibold text-gray-800 mb-4">Dressage</h3>
-      <p className="text-gray-700">{recipe.dressing}</p>
+      <p className="text-gray-700 mb-6">{recipe.dressing}</p>
+
       {suggestedRecipes.length > 0 && (
         <div className="mt-8">
-          <h3 className="text-2xl font-semibold text-gray-800 mb-4">Recettes similaires avec la même licence :</h3>
+          <h3 className="text-2xl font-semibold text-gray-800 mb-4">Recettes suggérées :</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {suggestedRecipes.map((suggestedRecipe) => (
               <Link key={suggestedRecipe.slug} href={`/recettes/${suggestedRecipe.slug}`}>
-                <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-200">
                   <img
-                    src={suggestedRecipe.images && suggestedRecipe.images.length > 0 ? suggestedRecipe.images[0] : '/default-image.jpg'} // Image par défaut si aucune image n'est disponible
+                    src={suggestedRecipe.images?.[0] || '/default-image.jpg'}
                     alt={suggestedRecipe.title}
                     className="w-full h-40 object-cover"
                   />

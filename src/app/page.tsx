@@ -33,13 +33,13 @@ export default function Home() {
         }
         const data: Recipe[] = await res.json();
         setRecipes(data);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (err) {
         setError("Impossible de récupérer les recettes.");
       } finally {
         setLoading(false);
       }
     };
+
     fetchRecipes();
   }, []);
 
@@ -48,7 +48,7 @@ export default function Home() {
       setStartIndex((prevIndex) => (prevIndex === 0 ? recipes.length - cardsPerPage : prevIndex - 1));
     } else {
       setStartIndex((prevIndex) =>
-        prevIndex + 1 >= recipes.length - cardsPerPage ? 0 : prevIndex + 1
+        prevIndex + cardsPerPage >= recipes.length ? 0 : prevIndex + 1
       );
     }
   };
@@ -61,7 +61,7 @@ export default function Home() {
       <div className={styles.description}>
         <h2 className={styles.title}>À propos de Gastronogeek</h2>
         <p className={styles.fullDescription}>
-          Chez Gastronogeek, nous croyons que la cuisine est un terrain de jeu sans fin pour exprimer sa créativité. Nous vous offrons une expérience culinaire unique, où chaque plat est inspiré de l`univers geek. Plongez dans des recettes dignes des plus grands films, séries et jeux vidéo. Que vous soyez un fan de science-fiction, de fantasy ou d`aventures épiques, nous avons quelque chose pour chaque geek qui aime cuisiner.
+          Chez Gastronogeek, nous croyons que la cuisine est un terrain de jeu sans fin pour exprimer sa créativité. Nous vous offrons une expérience culinaire unique, où chaque plat est inspiré de l'univers geek. Plongez dans des recettes dignes des plus grands films, séries et jeux vidéo. Que vous soyez un fan de science-fiction, de fantasy ou d'aventures épiques, nous avons quelque chose pour chaque geek qui aime cuisiner.
         </p>
       </div>
 
@@ -73,23 +73,17 @@ export default function Home() {
           <p className="text-red-500">{error}</p>
         ) : (
           <div className={styles.carouselWrapper}>
-            <button
-              className={styles.carouselButton}
-              onClick={() => handleScroll("left")}
-            >
+            <button className={styles.carouselButton} onClick={() => handleScroll("left")}>
               ◀
             </button>
 
             <div className={styles.carouselContainer}>
               {visibleRecipes.map((recipe) => (
-                <Card key={recipe.id} recipe={recipe} />
+                <Card key={recipe.slug} recipe={recipe} />
               ))}
             </div>
 
-            <button
-              className={styles.carouselButton}
-              onClick={() => handleScroll("right")}
-            >
+            <button className={styles.carouselButton} onClick={() => handleScroll("right")}>
               ▶
             </button>
           </div>
