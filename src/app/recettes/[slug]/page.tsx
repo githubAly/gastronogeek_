@@ -180,7 +180,7 @@ export default function RecipeDetail({ params }: { params: Promise<{ slug: strin
 
       {suggestedRecipes.length > 0 && (
         <div className="mt-8">
-          <h3 className="text-2xl font-semibold text-gray-800 mb-4">Recettes suggérées :</h3>
+          <h3 className="text-2xl font-semibold text-gray-800 mb-4">Recettes suggérées selon la licence</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {suggestedRecipes.map((suggestedRecipe) => (
               <Link key={suggestedRecipe.slug} href={`/recettes/${suggestedRecipe.slug}`}>
